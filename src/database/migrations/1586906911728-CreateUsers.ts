@@ -59,6 +59,7 @@ export default class CreateUsers1586906911728 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey('appointments', 'AppointmentProvider')
     await queryRunner.dropTable('users');
   }
 }
