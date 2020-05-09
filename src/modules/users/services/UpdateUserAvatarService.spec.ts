@@ -4,17 +4,23 @@ import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepo
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
-describe('UpdateUserAvatar', () => {
-  it('should not be able to upload avatar image if user does not exists', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
+let fakeUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateUserAvatar: UpdateUserAvatarService;
 
-    const updateUserAvatar = new UpdateUserAvatarService(
+describe('UpdateUserAvatar', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeStorageProvider = new FakeStorageProvider();
+
+    updateUserAvatar = new UpdateUserAvatarService(
       fakeUsersRepository,
       fakeStorageProvider,
     );
+  });
 
-    expect(
+  it('should not be able to upload avatar image if user does not exists', async () => {
+    await expect(
       updateUserAvatar.execute({
         user_id: '',
         avatarFilename: 'avatar.jpg',
@@ -23,14 +29,6 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should let user upload an avatar image', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider,
-    );
-
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'john@email.com',
@@ -46,15 +44,7 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should delete old avatar image when updating it', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
-
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider,
-    );
 
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
