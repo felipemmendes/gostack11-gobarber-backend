@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import UserProfileController from '@modules/users/infra/http/controllers/UserProfileController';
 
@@ -10,6 +11,24 @@ const userProfileController = new UserProfileController();
 userProfileRouter.use(ensureAuthenticated);
 
 userProfileRouter.get('/', userProfileController.show);
-userProfileRouter.put('/', userProfileController.update);
+userProfileRouter.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      old_password: Joi.when(Joi.ref('password'), {
+        then: Joi.string().required(),
+        otherwise: Joi.string().forbidden(),
+      }),
+      password: Joi.string(),
+      password_confirmation: Joi.string().when(Joi.ref('password'), {
+        then: Joi.string().required().valid(Joi.ref('password')),
+        otherwise: Joi.string().forbidden(),
+      }),
+    },
+  }),
+  userProfileController.update,
+);
 
 export default userProfileRouter;
