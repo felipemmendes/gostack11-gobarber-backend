@@ -18,13 +18,15 @@ userProfileRouter.put(
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       old_password: Joi.when(Joi.ref('password'), {
+        is: true,
         then: Joi.string().required(),
-        otherwise: Joi.string().forbidden(),
+        otherwise: Joi.string().allow(''),
       }),
-      password: Joi.string(),
+      password: Joi.string().allow(''),
       password_confirmation: Joi.string().when(Joi.ref('password'), {
+        is: true,
         then: Joi.string().required().valid(Joi.ref('password')),
-        otherwise: Joi.string().forbidden(),
+        otherwise: Joi.string().allow(''),
       }),
     },
   }),
