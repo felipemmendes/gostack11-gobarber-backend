@@ -4,7 +4,7 @@ import multer, { StorageEngine } from 'multer';
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
-interface IUploadConfig {
+interface UploadConfig {
   driver: 's3' | 'disk';
 
   tmpFolder: string;
@@ -47,4 +47,4 @@ export default {
       bucket: 'gobarber-fmmendes',
     },
   },
-} as IUploadConfig;
+} as UploadConfig;

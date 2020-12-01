@@ -4,17 +4,17 @@ import { injectable, inject } from 'tsyringe';
 import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
+import HashProvider from '@modules/users/providers/HashProvider/models/HashProvider';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
-interface IRequest {
+interface Request {
   email: string;
   password: string;
 }
 
-interface IResponse {
+interface Response {
   user: User;
   token: string;
 }
@@ -23,13 +23,13 @@ interface IResponse {
 class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProvider,
   ) {}
 
-  public async execute({ email, password }: IRequest): Promise<IResponse> {
+  public async execute({ email, password }: Request): Promise<Response> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {

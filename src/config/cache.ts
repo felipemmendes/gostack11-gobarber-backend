@@ -1,6 +1,6 @@
 import { RedisOptions } from 'ioredis';
 
-interface ICacheConfig {
+interface CacheConfig {
   driver: 'redis';
   config: {
     redis: RedisOptions;
@@ -17,4 +17,4 @@ export default {
       password: process.env.REDIS_PASS || undefined,
     },
   },
-} as ICacheConfig;
+} as CacheConfig;

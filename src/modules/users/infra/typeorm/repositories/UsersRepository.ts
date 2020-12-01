@@ -1,12 +1,12 @@
 import { getRepository, Repository, Not } from 'typeorm';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
+import UsersRepositoryType from '@modules/users/repositories/UsersRepository';
+import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
+import FindAllProvidersDTO from '@modules/users/dtos/FindAllProvidersDTO';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
-class UsersRepositories implements IUsersRepository {
+class UsersRepository implements UsersRepositoryType {
   private ormRepository: Repository<User>;
 
   constructor() {
@@ -15,7 +15,7 @@ class UsersRepositories implements IUsersRepository {
 
   public async findAllProviders({
     except_user_id,
-  }: IFindAllProvidersDTO): Promise<User[]> {
+  }: FindAllProvidersDTO): Promise<User[]> {
     let providers: User[];
 
     if (except_user_id) {
@@ -45,7 +45,7 @@ class UsersRepositories implements IUsersRepository {
     return user;
   }
 
-  public async create(userData: ICreateUserDTO): Promise<User> {
+  public async create(userData: CreateUserDTO): Promise<User> {
     const user = this.ormRepository.create(userData);
 
     await this.ormRepository.save(user);
@@ -58,4 +58,4 @@ class UsersRepositories implements IUsersRepository {
   }
 }
 
-export default UsersRepositories;
+export default UsersRepository;

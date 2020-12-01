@@ -18,9 +18,5 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "node_modules",
-    "<outDir>",
-    "coverage",
-]
+  "exclude": ["node_modules", "<outDir>", "coverage"]
 }

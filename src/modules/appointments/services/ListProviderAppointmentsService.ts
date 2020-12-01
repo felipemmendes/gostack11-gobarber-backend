@@ -2,10 +2,10 @@ import { injectable, inject } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
+import CacheProvider from '@shared/container/providers/CacheProvider/models/CacheProvider';
 
-interface IRequest {
+interface Request {
   provider_id: string;
   day: number;
   month: number;
@@ -16,10 +16,10 @@ interface IRequest {
 class LitsProviderAppointmentsService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository,
+    private appointmentsRepository: AppointmentsRepository,
 
     @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
+    private cacheProvider: CacheProvider,
   ) {}
 
   public async execute({
@@ -27,7 +27,7 @@ class LitsProviderAppointmentsService {
     day,
     month,
     year,
-  }: IRequest): Promise<Appointment[]> {
+  }: Request): Promise<Appointment[]> {
     const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
 
     let appointments = await this.cacheProvider.recover<Appointment[]>(

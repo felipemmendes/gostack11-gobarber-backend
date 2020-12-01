@@ -4,11 +4,11 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
+import NotificationsRepository from '@modules/notifications/repositories/NotificationsRepository';
+import CacheProvider from '@shared/container/providers/CacheProvider/models/CacheProvider';
 
-interface IRequest {
+interface Request {
   provider_id: string;
   user_id: string;
   date: Date;
@@ -18,20 +18,20 @@ interface IRequest {
 class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository,
+    private appointmentsRepository: AppointmentsRepository,
 
     @inject('NotificationsRepository')
-    private notificationsRepository: INotificationsRepository,
+    private notificationsRepository: NotificationsRepository,
 
     @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
+    private cacheProvider: CacheProvider,
   ) {}
 
   public async execute({
     provider_id,
     user_id,
     date,
-  }: IRequest): Promise<Appointment> {
+  }: Request): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
     if (isBefore(appointmentDate, Date.now())) {

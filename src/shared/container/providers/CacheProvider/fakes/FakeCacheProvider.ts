@@ -1,11 +1,11 @@
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import CacheProvider from '@shared/container/providers/CacheProvider/models/CacheProvider';
 
-interface ICacheData {
+interface CacheData {
   [key: string]: string;
 }
 
-export default class RedisCacheProvider implements ICacheProvider {
-  private cache: ICacheData = {};
+export default class RedisCacheProvider implements CacheProvider {
+  private cache: CacheData = {};
 
   public async save(key: string, value: string): Promise<void> {
     this.cache[key] = JSON.stringify(value);

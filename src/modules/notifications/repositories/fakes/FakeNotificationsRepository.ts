@@ -1,17 +1,17 @@
 import { ObjectID } from 'mongodb';
 
-import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
-import ICreateNotificationDTO from '@modules/notifications/dtos/ICreateNotificationDTO';
+import NotificationsRepositoryType from '@modules/notifications/repositories/NotificationsRepository';
+import CreateNotificationDTO from '@modules/notifications/dtos/CreateNotificationDTO';
 
 import Notification from '@modules/notifications/infra/typeorm/schemas/Notification';
 
-class NotificationsRepository implements INotificationsRepository {
+class NotificationsRepository implements NotificationsRepositoryType {
   private notifications: Notification[] = [];
 
   public async create({
     recipient_id,
     content,
-  }: ICreateNotificationDTO): Promise<Notification> {
+  }: CreateNotificationDTO): Promise<Notification> {
     const notification = new Notification();
 
     Object.assign(notification, { id: new ObjectID(), content, recipient_id });

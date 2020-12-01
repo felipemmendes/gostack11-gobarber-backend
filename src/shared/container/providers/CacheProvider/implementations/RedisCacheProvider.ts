@@ -2,9 +2,9 @@ import Redis, { Redis as RedisType } from 'ioredis';
 
 import cacheConfig from '@config/cache';
 
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import CacheProvider from '@shared/container/providers/CacheProvider/models/CacheProvider';
 
-export default class RedisCacheProvider implements ICacheProvider {
+export default class RedisCacheProvider implements CacheProvider {
   private client: RedisType;
 
   constructor() {

@@ -1,11 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
 import User from '@modules/users/infra/typeorm/entities/User';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import CacheProvider from '@shared/container/providers/CacheProvider/models/CacheProvider';
 
-interface IRequest {
+interface Request {
   user_id: string;
 }
 
@@ -13,13 +13,13 @@ interface IRequest {
 class ListProvidersService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepository,
 
     @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
+    private cacheProvider: CacheProvider,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<User[]> {
+  public async execute({ user_id }: Request): Promise<User[]> {
     let providers = await this.cacheProvider.recover<User[]>(
       `providers-list:${user_id}`,
     );

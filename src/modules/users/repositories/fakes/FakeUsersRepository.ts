@@ -1,17 +1,17 @@
 import { uuid } from 'uuidv4';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
+import UsersRepositoryType from '@modules/users/repositories/UsersRepository';
+import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
+import FindAllProvidersDTO from '@modules/users/dtos/FindAllProvidersDTO';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
-class FakeUsersRepositories implements IUsersRepository {
+class FakeUsersRepository implements UsersRepositoryType {
   private users: User[] = [];
 
   public async findAllProviders({
     except_user_id,
-  }: IFindAllProvidersDTO): Promise<User[]> {
+  }: FindAllProvidersDTO): Promise<User[]> {
     const providers = this.users.filter((user) => user.id !== except_user_id);
 
     return providers;
@@ -29,7 +29,7 @@ class FakeUsersRepositories implements IUsersRepository {
     return findUser;
   }
 
-  public async create(userData: ICreateUserDTO): Promise<User> {
+  public async create(userData: CreateUserDTO): Promise<User> {
     const user = new User();
 
     Object.assign(user, { id: uuid() }, userData);
@@ -50,4 +50,4 @@ class FakeUsersRepositories implements IUsersRepository {
   }
 }
 
-export default FakeUsersRepositories;
+export default FakeUsersRepository;

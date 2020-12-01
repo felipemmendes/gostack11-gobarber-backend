@@ -1,4 +1,4 @@
-interface IMailConfig {
+interface MailConfig {
   driver: 'ethereal' | 'ses';
 
   defaults: {
@@ -18,4 +18,4 @@ export default {
       name: 'Felipe',
     },
   },
-} as IMailConfig;
+} as MailConfig;

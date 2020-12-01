@@ -2,11 +2,11 @@ import { injectable, inject } from 'tsyringe';
 import path from 'path';
 
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
+import UserTokensRepository from '@modules/users/repositories/UserTokensRepository';
+import MailProvider from '@shared/container/providers/MailProvider/models/MailProvider';
 
-interface IRequest {
+interface Request {
   email: string;
 }
 
@@ -14,16 +14,16 @@ interface IRequest {
 class ForgotPasswordService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepository,
 
     @inject('UserTokensRepository')
-    private userTokensRepository: IUserTokensRepository,
+    private userTokensRepository: UserTokensRepository,
 
     @inject('MailProvider')
-    private mailProvider: IMailProvider,
+    private mailProvider: MailProvider,
   ) {}
 
-  public async execute({ email }: IRequest): Promise<void> {
+  public async execute({ email }: Request): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {

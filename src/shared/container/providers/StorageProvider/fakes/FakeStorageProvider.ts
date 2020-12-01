@@ -1,6 +1,6 @@
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import StorageProvider from '@shared/container/providers/StorageProvider/models/StorageProvider';
 
-class FakeStorageProvider implements IStorageProvider {
+class FakeStorageProvider implements StorageProvider {
   private storage: string[] = [];
 
   public async saveFile(file: string): Promise<string> {

@@ -1,14 +1,14 @@
 import { getRepository, Repository, Raw } from 'typeorm';
 
-import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import IFindAvailabilityInMonthDTO from '@modules/appointments/dtos/IFindAvailabilityInMonthDTO';
-import IFindAvailabilityInDayDTO from '@modules/appointments/dtos/IFindAvailabilityInDayDTO';
-import IFindByDateDTO from '@modules/appointments/dtos/IFindByDateDTO';
+import AppointmentsRepositoryType from '@modules/appointments/repositories/AppointmentsRepository';
+import CreateAppointmentDTO from '@modules/appointments/dtos/CreateAppointmentDTO';
+import FindAvailabilityInMonthDTO from '@modules/appointments/dtos/FindAvailabilityInMonthDTO';
+import FindAvailabilityInDayDTO from '@modules/appointments/dtos/FindAvailabilityInDayDTO';
+import FindByDateDTO from '@modules/appointments/dtos/FindByDateDTO';
 
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 
-class AppointmentsRepositories implements IAppointmentsRepository {
+class AppointmentsRepository implements AppointmentsRepositoryType {
   private ormRepository: Repository<Appointment>;
 
   constructor() {
@@ -18,7 +18,7 @@ class AppointmentsRepositories implements IAppointmentsRepository {
   public async findByDate({
     provider_id,
     date,
-  }: IFindByDateDTO): Promise<Appointment | undefined> {
+  }: FindByDateDTO): Promise<Appointment | undefined> {
     const findAppointment = await this.ormRepository.findOne({
       where: {
         provider_id,
@@ -33,7 +33,7 @@ class AppointmentsRepositories implements IAppointmentsRepository {
     provider_id,
     month,
     year,
-  }: IFindAvailabilityInMonthDTO): Promise<Appointment[]> {
+  }: FindAvailabilityInMonthDTO): Promise<Appointment[]> {
     const parsedMonth = String(month).padStart(2, '0');
 
     const appointments = await this.ormRepository.find({
@@ -54,7 +54,7 @@ class AppointmentsRepositories implements IAppointmentsRepository {
     day,
     month,
     year,
-  }: IFindAvailabilityInDayDTO): Promise<Appointment[]> {
+  }: FindAvailabilityInDayDTO): Promise<Appointment[]> {
     const parsedDay = String(day).padStart(2, '0');
     const parsedMonth = String(month).padStart(2, '0');
 
@@ -76,7 +76,7 @@ class AppointmentsRepositories implements IAppointmentsRepository {
     provider_id,
     user_id,
     date,
-  }: ICreateAppointmentDTO): Promise<Appointment> {
+  }: CreateAppointmentDTO): Promise<Appointment> {
     const appointment = this.ormRepository.create({
       provider_id,
       user_id,
@@ -89,4 +89,4 @@ class AppointmentsRepositories implements IAppointmentsRepository {
   }
 }
 
-export default AppointmentsRepositories;
+export default AppointmentsRepository;

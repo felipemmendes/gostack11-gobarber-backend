@@ -4,17 +4,17 @@ import aws from 'aws-sdk';
 
 import mailConfig from '@config/mail';
 
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
-import IMailTemplateProvider from '@shared/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
-import ISendMailDTO from '@shared/container/providers/MailProvider/dtos/ISendMailDTO';
+import MailProvider from '@shared/container/providers/MailProvider/models/MailProvider';
+import MailTemplateProvider from '@shared/container/providers/MailTemplateProvider/models/MailTemplateProvider';
+import SendMailDTO from '@shared/container/providers/MailProvider/dtos/SendMailDTO';
 
 @injectable()
-export default class SESMailProvider implements IMailProvider {
+export default class SESMailProvider implements MailProvider {
   private client: Transporter;
 
   constructor(
     @inject('MailTemplateProvider')
-    private mailTemplateProvider: IMailTemplateProvider,
+    private mailTemplateProvider: MailTemplateProvider,
   ) {
     this.client = nodemailer.createTransport({
       SES: new aws.SES({
@@ -29,7 +29,7 @@ export default class SESMailProvider implements IMailProvider {
     from,
     subject,
     templateData,
-  }: ISendMailDTO): Promise<void> {
+  }: SendMailDTO): Promise<void> {
     const { name: fromName, email: fromEmail } = mailConfig.defaults.from;
     await this.client.sendMail({
       from: {

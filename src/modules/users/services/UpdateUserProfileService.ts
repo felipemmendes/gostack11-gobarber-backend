@@ -2,11 +2,11 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
+import HashProvider from '@modules/users/providers/HashProvider/models/HashProvider';
 import User from '@modules/users/infra/typeorm/entities/User';
 
-interface IRequest {
+interface Request {
   user_id: string;
   name: string;
   email: string;
@@ -18,10 +18,10 @@ interface IRequest {
 class UpdateUserProfileService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProvider,
   ) {}
 
   public async execute({
@@ -30,7 +30,7 @@ class UpdateUserProfileService {
     email,
     password,
     old_password,
-  }: IRequest): Promise<User> {
+  }: Request): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {

@@ -5,9 +5,9 @@ import mime from 'mime';
 
 import uploadConfig from '@config/upload';
 
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import StorageProvider from '@shared/container/providers/StorageProvider/models/StorageProvider';
 
-class DiskStorageProvider implements IStorageProvider {
+class DiskStorageProvider implements StorageProvider {
   private client: S3;
 
   constructor() {

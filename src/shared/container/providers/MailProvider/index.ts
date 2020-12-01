@@ -2,7 +2,7 @@ import { container } from 'tsyringe';
 
 import mailConfig from '@config/mail';
 
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
+import MailProvider from '@shared/container/providers/MailProvider/models/MailProvider';
 
 import SESMailProvider from '@shared/container/providers/MailProvider/implementations/SESMailProvider';
 import EtherealMailProvider from '@shared/container/providers/MailProvider/implementations/EtherealMailProvider';
@@ -12,7 +12,7 @@ const providers = {
   ses: container.resolve(SESMailProvider),
 };
 
-container.registerInstance<IMailProvider>(
+container.registerInstance<MailProvider>(
   'MailProvider',
   providers[mailConfig.driver],
 );

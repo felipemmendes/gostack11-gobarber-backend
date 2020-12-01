@@ -2,11 +2,11 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
+import StorageProvider from '@shared/container/providers/StorageProvider/models/StorageProvider';
 import User from '@modules/users/infra/typeorm/entities/User';
 
-interface IRequest {
+interface Request {
   user_id: string;
   avatarFilename: string;
 }
@@ -15,13 +15,13 @@ interface IRequest {
 class UpdateUserAvatarService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepository,
 
     @inject('StorageProvider')
-    private storageProvider: IStorageProvider,
+    private storageProvider: StorageProvider,
   ) {}
 
-  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
+  public async execute({ user_id, avatarFilename }: Request): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {

@@ -3,9 +3,9 @@ import path from 'path';
 
 import uploadConfig from '@config/upload';
 
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import StorageProvider from '@shared/container/providers/StorageProvider/models/StorageProvider';
 
-class DiskStorageProvider implements IStorageProvider {
+class DiskStorageProvider implements StorageProvider {
   public async saveFile(file: string): Promise<string> {
     await fs.promises.rename(
       path.resolve(uploadConfig.tmpFolder, file),

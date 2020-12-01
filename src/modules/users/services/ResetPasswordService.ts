@@ -3,11 +3,11 @@ import { isUuid } from 'uuidv4';
 import { differenceInHours } from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
-import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import UsersRepository from '@modules/users/repositories/UsersRepository';
+import UserTokensRepository from '@modules/users/repositories/UserTokensRepository';
+import HashProvider from '@modules/users/providers/HashProvider/models/HashProvider';
 
-interface IRequest {
+interface Request {
   token: string;
   password: string;
 }
@@ -16,16 +16,16 @@ interface IRequest {
 class ResetPasswordService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepository,
 
     @inject('UserTokensRepository')
-    private userTokensRepository: IUserTokensRepository,
+    private userTokensRepository: UserTokensRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProvider,
   ) {}
 
-  public async execute({ token, password }: IRequest): Promise<void> {
+  public async execute({ token, password }: Request): Promise<void> {
     if (!isUuid(token)) {
       throw new AppError('Invalid token');
     }
